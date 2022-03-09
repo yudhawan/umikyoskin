@@ -1,7 +1,6 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit'
 
-// create function add product to cart as async thunk and save it in local storage
-export const addProductToCart = createAsyncThunk('cart/addProductToCart', async (product, {getState}) => {
+export const addProductToCart = createAsyncThunk('cart/addProductToCart', async (product) => {
     let cart = []
     try {
         cart = await JSON.parse(localStorage.getItem('__kn_al'))
@@ -24,60 +23,39 @@ export const addProductToCart = createAsyncThunk('cart/addProductToCart', async 
     
 })
 
-
-// create function delete product from cart as async thunk and save it in local storage
-export const deleteItem = createAsyncThunk('cart/deleteItem', async (id, {rejectWithValue}) => {
+export const incrementProductQty = createAsyncThunk('cart/incrementProductQty', async (id, {dispatch,getState}) => {
     let cart = []
-    let products = []
     try {
         cart = await JSON.parse(localStorage.getItem('__kn_al'))
-        products = await JSON.parse(localStorage.getItem('__kn_al_p'))
     } catch (error) {
         cart = []
-        products = []
-    }
-    if (cart) {
-        const newdata = cart.filter(value => value.id!==id)
-        localStorage.setItem('__kn_al', JSON.stringify(newdata))
-        return newdata
-    }
-})
-
-// create increment product qty as async thunk and save it in local storage
-export const incrementProductQty = createAsyncThunk('cart/incrementProductQty', async (id, {rejectWithValue}) => {
-    let cart = []
-    let products = []
-    try {
-        cart = await JSON.parse(localStorage.getItem('__kn_al'))
-        products = await JSON.parse(localStorage.getItem('__kn_al_p'))
-    } catch (error) {
-        cart = []
-        products = []
     }
     if (cart) {
         const newdata = cart.map(value => {
-            if (value.id === id) {
-                value.qt = (value.qt===value.stock)?value.qt:value.qt+1
-                value.fixprice = (value.qt>=value.grosir_min & value.grosir_min!==null)?value.grosir_price:value.price
-            }
+            if (value.id === id) value.qt = (value.qt===value.stock)?value.qt:value.qt+1
             return value
         })
         localStorage.setItem('__kn_al', JSON.stringify(newdata))
+        dispatch(getBasket())
         return newdata
     }
 })
 
 export const decrementProductQty = createAsyncThunk('cart/decrementProductQty', async (id, {dispatch}) => {
-    let cart = await JSON.parse(localStorage.getItem('__kn_al'))
+    let cart = []
+    try {
+        cart = await JSON.parse(localStorage.getItem('__kn_al'))
+    } catch (error) {
+        cart = []
+    }
     if (cart) {
         const newdata = cart.map(value => {
-            if (value.id === id) {
-                value.qt = (value.qt===value.stock)?value.qt:value.qt-1
-                value.fixprice = (value.qt>=value.grosir_min & value.grosir_min!==null)?value.grosir_price:value.price
-            }
+            if (value.id === id) value.qt = (value.qt===value.stock)?value.qt:value.qt-1
+            if(value.qt===0) value.qt=1
             return value
         })
         localStorage.setItem('__kn_al', JSON.stringify(newdata))
+        dispatch(getBasket())
         return newdata
     }
 })
@@ -90,8 +68,23 @@ export const getCarts = createAsyncThunk('cart/getCarts', async (id, {rejectWith
     }
     return cart
 })
+export const deleteItem = createAsyncThunk('cart/deleteItem', async (id, {dispatch}) => {
+    let cart = []
+    try {
+        cart = await JSON.parse(localStorage.getItem('__kn_al'))
+    } catch (error) {
+        cart = []
+    }
+    if (cart) {
+        const newdata = cart.filter(value => value.id!==id)
+        localStorage.setItem('__kn_al', JSON.stringify(newdata))
+        dispatch(getBasket())
+        return newdata
+    }
+})
 // create function get cart 
 export const getBasket = createAsyncThunk('cart/getCart', async (arg,{getState}) => {
+    const token = getState().auth.token
     let cart = []
     let products
     try {
@@ -102,16 +95,30 @@ export const getBasket = createAsyncThunk('cart/getCart', async (arg,{getState})
     }
     let basket =[]
     cart = await JSON.parse(localStorage.getItem('__kn_al'))
-    cart&&cart.map(value=>{
-        let tmp = products.filter(val=> {
-            if(val.id===value.id){
-                val.quantity=value.qt
-                val.fixprice = (val.quantity>=val.grosir_min & val.grosir_min!==null)?val.grosir_price:val.price
-                return val
-            }
+    if(token){
+        cart&&cart.map(value=>{
+            let tmp = products.filter(val=> {
+                if(val.id===value.id){
+                    val.quantity=value.qt
+                    val.fixprice = (val.quantity>=val.grosir_min & val.grosir_min!==null)?val.grosir_price:val.price
+                    return val
+                }
+            })
+            basket.push(tmp[0])
         })
-        basket.push(tmp[0])
-    })
+
+    }else{
+        cart&&cart.map(value=>{
+            let tmp = products.filter(val=> {
+                if(val.id===value.id){
+                    val.quantity=value.qt
+                    val.fixprice = val.price
+                    return val
+                }
+            })
+            basket.push(tmp[0])
+        })
+    }
     
     return basket
 })
@@ -123,6 +130,7 @@ const cartSlice = createSlice({
     initialState: {
         carts: [],
         basket: [],
+        basketLoading: false,
         cartLoading: false,
         error: null,
     },
@@ -160,6 +168,15 @@ const cartSlice = createSlice({
         [getBasket.rejected]: (state, action) => {
             state.basketLoading = false
             state.error = action.payload
+        },
+        [deleteItem.fulfilled]: (state, action) => {
+            state.carts = action.payload
+        },
+        [incrementProductQty.fulfilled]: (state, action) => {
+            state.carts = action.payload
+        },
+        [decrementProductQty.fulfilled]: (state, action) => {
+            state.carts = action.payload
         },
     }
 })

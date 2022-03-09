@@ -1,8 +1,15 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-
+import {host} from '../host'
 export const getCategories = createAsyncThunk('categories/getCategories', async () => {
     const response = await fetch('https://beautyshop.yashacode.com/category')
     const data = await response.json()
+    return data
+})
+
+export const getbanners = createAsyncThunk('banners/getbanners', async () => {
+    const response = await fetch('https://beautyshop.yashacode.com/dashboard/getbanners')
+    const data = await response.json()
+    // console.log(data)
     return data
 })
 
@@ -12,6 +19,8 @@ const categoriesSlice = createSlice({
         categories: [],
         categoriesLoading: false,
         error: null,
+        banners: [],
+        bannersLoading: false,
     },
     extraReducers: {
         [getCategories.pending]: (state, action) => {
@@ -24,7 +33,18 @@ const categoriesSlice = createSlice({
         [getCategories.rejected]: (state, action) => {
             state.categoriesLoading = false
             state.error = action.error.message
-        }
+        },
+        [getbanners.pending]: (state) => {
+            state.bannersLoading = true
+        },
+        [getbanners.fulfilled]: (state, action) => {
+            state.bannersLoading = false
+            state.banners = action.payload
+        },
+        [getbanners.rejected]: (state, action) => {
+            state.bannersLoading = false
+            state.error = action.payload
+        },
     }
 })
 

@@ -6,7 +6,11 @@ import Categories from '../components/Categories'
 import Products from '../components/Products';
 import { getProducts } from '../features/products/productsSlice';
 import { getCategories } from '../features/categories/categoriesSlice';
+import {useParams} from 'react-router-dom'
+
 function AllProducts() {
+  const {category} = useParams()
+  const catparams = category?category:''
   const dispatch = useDispatch()
   const {products,productsLoading} = useSelector(state => state.products)
   const {categories,categoriesLoading} = useSelector(state => state.categories)
@@ -32,9 +36,14 @@ function AllProducts() {
             </div>
           </div>
         )       
-        :categories.map(({category,sub_categories,id})=> <Categories category={category} id={id} sub={sub_categories} />
-        )}
+        :categories.map(({category,sub_categories,id})=> {
+          return catparams?<></>:<Categories category={category} id={id} sub={sub_categories} />
+        })}
+        {/* category?categories.filter(val=> val.category===category).map(({sub_categories})=> {
+          return sub_categories.map(({sub,id})=> <SubCategories key={id} sub={sub} subSelect={subSelect} />)
+       }): */}
       </div>
+      
       {/* All products */}
       <div className={'flex flex-wrap mt-1 justify-center items-center'}>
         {
@@ -48,7 +57,7 @@ function AllProducts() {
               </div>
               <div className=' p-1 line-clamp-1 font-medium text-left rounded-sm w-28 h-4 bg-gray-300'></div>    
           </div>)
-          :products.filter(val => val.product_name.toLowerCase().includes(search.toLowerCase())).map(({id,product_name,stock,price,category,sub,images,description,grosir_min,grosir_price})=> <Products id={id} product_name={product_name} stock={stock} price={price} category={category} sub={sub} images={images} description={description} grosir_min={grosir_min} grosir_price={grosir_price} search={search} />)
+          :products.filter(cat => cat.category.toLowerCase().includes(catparams.toLowerCase())).filter(val => val.product_name.toLowerCase().includes(search.toLowerCase())).map(({id,product_name,stock,price,category,sub,images,description,grosir_min,grosir_price})=> <Products id={id} product_name={product_name} stock={stock} price={price} category={category} sub={sub} images={images} description={description} grosir_min={grosir_min} grosir_price={grosir_price} />)
           
         }
         

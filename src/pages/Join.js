@@ -1,14 +1,16 @@
-import {useState} from 'react';
-import {useDispatch} from 'react-redux'
+import {useState,useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux'
+import {addUser,resetStatus} from '../features/users/usersSlice'
 import { useNavigate } from "react-router-dom";
 import {faInstagram,faShopify, faWhatsapp, faFacebook,} from "@fortawesome/free-brands-svg-icons";
 import {FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 function Join() {
+  const dispatch = useDispatch()
+  const {status,usersLoading} = useSelector(state => state.users)
   const navigate = useNavigate();
   const [valid, setValid]=useState('')
   const [validation, setValidation]=useState('')
   const [repassword,setRepassword] = useState('')
-  const [showpass,setShowpass] = useState(false)
   const [user, setUser] = useState({
       fullname: '',
       name: '',
@@ -25,7 +27,8 @@ function Join() {
       alamat:'',
       password:''
   })
-  function cek(e){
+  
+  function handleSubmit(e){
       e.preventDefault()
       if(user.fullname==='') return setValid('Isi Nama Lengkap Anda')
       if(user.name==='') return setValid('Isi Nama Panggilan Anda')
@@ -38,20 +41,21 @@ function Join() {
       if(user.provinsi==='') return setValid('Isikan Provinsi Anda')
       if(user.kota==='') return setValid('Isikan Kota Anda')
       if(user.alamat==='') return setValid('Isi Alamat Lengkap Anda')
-      return setShowpass(!showpass)
+      if(user.password==='') return setValidation('Isi password anda')
+      if(user.password!==repassword) return setValidation('Isi ulang password anda')
+      submit()  
   }
-  const status = null
-  // function handleSubmit(){
-  //     if(user.password==='') return setValidation('Isi password anda')
-  //     if(user.password!==repassword) return setValidation('Isi ulang password anda')
-  //     adduser(user)
-  //     setShowpass(!showpass)
-  // }
-
-  // perlu ditambahkan reset status
+  const submit =()=> {
+    if(user.status==='DS' || user.status==='DVIP') user.refferal=user.tgllhr.replaceAll('-','')
+    setValid('')
+    dispatch(addUser(user))
+  }
+  
+  
   if(status===201){
       setTimeout(()=>{
-         navigate('/')
+        dispatch(resetStatus())
+        navigate('/')
       },3000)
       return (
         <div className='justify-center items-center flex'>
@@ -61,6 +65,7 @@ function Join() {
   }
   if(status===203){
       setTimeout(()=>{
+        dispatch(resetStatus())
         navigate('/')
     },3000)
     return (
@@ -71,6 +76,7 @@ function Join() {
   }
   if(status===500){
     setTimeout(()=>{
+      dispatch(resetStatus())
       navigate('/')
     },3000)
     return (
@@ -81,6 +87,7 @@ function Join() {
   }
   if(status===202){
     setTimeout(()=>{
+      dispatch(resetStatus())
       navigate('/')
   },3000)
     return (
@@ -124,7 +131,10 @@ function Join() {
       <div className='flex-col space-y-2 lg:justify-end'>
         <div className='flex-col w-52'>
           <div className='font-semibold text-base text-primary'>Pilih member</div>
-          <select required value={user.status} onChange={(e)=> setUser({...user, status: e.target.value})} className='w-full border-2 border-gray-500 p-1 rounded-md outline-none'>
+          <select required value={user.status} onChange={(e)=> {
+            setUser({...user, refferal: ''})
+            setUser({...user, status: e.target.value})
+            }} className='w-full border-2 border-gray-500 p-1 rounded-md outline-none'>
             <option>---/---</option>
             <option value="RNV">Reseller</option>
             <option value="ANV">Agen</option>
@@ -136,12 +146,12 @@ function Join() {
           (user.status==='DS' || user.status==='DVIP')?<></>:
           <div className='flex-col w-52'>
             <div className='font-semibold text-base text-primary'>Kode Refferal</div>
-            <input type='text' required value={user.refferal} onChange={(e)=> {setUser({...user, refferal: e.target.value.replace(/\s/g, '')})}} className='w-full border-2 border-gray-500 p-1 rounded-md outline-none' placeholder='DSXX' />
+            <input type='text' required value={user.refferal} onChange={(e)=> {setUser({...user, refferal: e.target.value.toLocaleUpperCase()})}} className='uppercase w-full border-2 border-gray-500 p-1 rounded-md outline-none' placeholder='DSXX' />
           </div>
         }
         <div className='font-semibold text-base text-primary'>Social Media</div>
         <div className='flex-col w-52'>
-          <div className='flex space-x-1 border-2 border-gray-500 p-1 rounded-md justify-center items-center'><FontAwesomeIcon icon={faWhatsapp} size="lg" className='text-green-500' /><input type='text' required value={user.whatsapp} onChange={(e)=> setUser({...user, whatsapp: e.target.value})} className='w-full outline-none' placeholder='085xxxxxxxxx' /></div>
+          <div className='flex space-x-1 border-2 border-gray-500 p-1 rounded-md justify-center items-center'><FontAwesomeIcon icon={faWhatsapp} size="lg" className='text-green-500' /><input type='number' required value={user.whatsapp} onChange={(e)=> setUser({...user, whatsapp: e.target.value})} className='w-full outline-none' placeholder='085xxxxxxxxx' /></div>
         </div>
         <div className='flex-col w-52'>
           <div className='flex space-x-1 border-2 border-gray-500 p-1 rounded-md justify-center items-center'><FontAwesomeIcon icon={faInstagram} size="lg" className='text-red' /><input type='text' required value={user.instagram} onChange={(e)=>setUser({...user, instagram: e.target.value})} className='w-full outline-none' placeholder='rebeca.ferguson07' /></div>
@@ -162,8 +172,13 @@ function Join() {
             } 
             return setValidation('')
           }} className='w-full border-2 border-gray-500 p-1 rounded-md outline-none' placeholder='Ulangi Password' />
+          <div className='bg-rose-100 text-rose-700 font-semibold text-center rounded-md'>{valid}</div>
+          <div className='bg-rose-100 text-rose-700 font-semibold text-center rounded-md'>{validation}</div>
         </div>
-        <button className='bg-green-500 px-4 py-2 rounded-md text-white hover:bg-green-700 '>Submit</button>
+        {
+          usersLoading?<div className='bg-gray-100 text-gray-700 font-semibold text-center rounded-md'>Loading...</div>:
+          <button className='bg-green-500 px-4 py-2 rounded-md text-white hover:bg-green-700 ' onClick={handleSubmit}>Submit</button>
+        }
       </div>
     </div>
   );
