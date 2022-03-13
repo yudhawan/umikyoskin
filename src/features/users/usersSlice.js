@@ -26,6 +26,7 @@ export const updateSetting = createAsyncThunk("users/updateSetting", async (data
     dispatch(authServices())
     return result.data
 })
+
 export const updatePicture = createAsyncThunk("users/updatePicture", async (data,{getState,dispatch}) => {
     const token = getState().auth.token
     let formdata = new FormData()
@@ -40,6 +41,18 @@ export const updatePicture = createAsyncThunk("users/updatePicture", async (data
         }
     })
     dispatch(authServices())
+    return result.data
+})
+export const resetPassword = createAsyncThunk("users/resetPassword", async (token) => {
+    const result = await axios.post(host+"/users/resetpassword", {token:token})
+    return result.data
+})
+export const forgetPassword = createAsyncThunk("users/forgetPassword", async (email) => {
+    const result = await axios.post(host+'/users/forgetpassword', {email:email})
+    return result.data
+})
+export const setNewPassword = createAsyncThunk("users/setNewPassword", async (data) => {
+    const result = await axios.post(host+'/users/setnewpassword', {token:data.token,password:data.password})
     return result.data
 })
 const usersSlice = createSlice({
@@ -112,6 +125,35 @@ const usersSlice = createSlice({
             state.usersLoading = false
             state.error = action.payload.status
         },
+        [forgetPassword.pending]: (state)=>{
+            state.usersLoading = true
+        },
+        [forgetPassword.fulfilled]: (state, action) => {
+            state.usersLoading = false
+            state.status = action.payload.status
+        },
+        [forgetPassword.rejected]: (state, action) => {
+            state.usersLoading = false
+            state.error = action.payload.status
+        },
+        [resetPassword.pending]: (state)=>{
+            state.usersLoading = true
+        },
+        [resetPassword.fulfilled]: (state, action) => {
+            state.usersLoading = false
+            state.status = action.payload.status
+        },
+        [resetPassword.rejected]: (state, action) => {
+            state.usersLoading = false
+            state.error = action.payload.status
+        },
+        [setNewPassword.pending]: (state)=>{
+            state.usersLoading = true
+        },
+        [setNewPassword.fulfilled]: (state, action) => {
+            state.usersLoading = false
+            state.status = action.payload.status
+        }
     },
 });
 export const {resetStatus} = usersSlice.actions;

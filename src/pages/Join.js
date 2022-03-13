@@ -35,8 +35,6 @@ function Join() {
       if(user.email==='') return setValid('Isi Email Anda')
       if(user.tgllhr===''|| user.tgllhr===null) return setValid('Isi Tanggal Lahir Anda')
       if(user.whatsapp==='') return setValid('Isi WhatsApp Anda')
-      if(user.instagram==='') return setValid('Isi Instagram Anda')
-      if(user.shoope==='') return setValid('Isi Shoope Anda')
       if(user.status==='') return setValid('Isi Status Anda')
       if(user.provinsi==='') return setValid('Isikan Provinsi Anda')
       if(user.kota==='') return setValid('Isikan Kota Anda')

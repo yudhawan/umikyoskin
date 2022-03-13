@@ -42,7 +42,7 @@ function Header({token}) {
       
         {/* mobile sosmed */}
         <div className={`block text-white lg:hidden absolute left-1 bg-transparent border border-white px-1 rounded-md cursor-pointer`} onClick={()=>setsosmed(!sosmed)}>+Follow</div>
-        <div className={`${sosmed?'block fixed':'hidden'} top-0 self-center z-50 flex justify-center bg-transparent backdrop-blur-sm items-center w-full h-full lg:bg-opacity-10 bg-opacity-75 bg-black`}>
+        <div className={`${sosmed?'block fixed':'hidden'} top-0  self-center z-50 flex justify-center bg-transparent backdrop-blur-sm items-center w-full h-full lg:bg-opacity-10 bg-opacity-75 bg-black`}>
           <div className='bg-slate-200 p-10 grid grid-cols-2 gap-8 rounded-sm w-auto h-auto relative '>
           <FontAwesomeIcon onClick={()=>setsosmed(!sosmed)} className='absolute top-[-1.4rem] right-[-1.4rem]  w-8 h-8 cursor-pointer text-red' icon={faTimesCircle}/>
             <div className='text-red cursor-pointer text-sm w-16 h-16 flex flex-col justify-center text-center'><FontAwesomeIcon icon={faInstagram} className='w-full h-full' onClick={()=> {
@@ -132,6 +132,12 @@ function Header({token}) {
           </>
           :<>
           <FontAwesomeIcon onClick={()=>setuser(!user)} className='absolute top-[-1.4rem] right-[-1.4rem]  w-8 h-8 cursor-pointer text-red' icon={faTimesCircle}/>
+          <form onSubmit={(e)=>{
+            e.preventDefault()
+            setlogin({...login, email:'', password:''})
+            setuser(false)
+            dispatch(userLogin(login))
+          }} className="flex flex-col space-y-1">
             <input type="email" value={login.email} onChange={(e)=>setlogin({...login, email:e.target.value})} className='px-3 rounded-sm h-10' placeholder='Email' />
             <input type="password" value={login.password} onChange={(e)=>setlogin({...login, password:e.target.value})} className='px-3 rounded-sm h-10 ' placeholder='Password' />
             <button className='bg-green-600 text-white rounded-sm p-2 justify-center items-center flex' onClick={()=> {
@@ -139,11 +145,15 @@ function Header({token}) {
               setuser(false)
               dispatch(userLogin(login))
             }}><FontAwesomeIcon icon={faSignInAlt} /> Login</button>
-            
+          </form>
             <div onClick={()=> {
               setuser(false)
               navigate('/join')
-              }} className='block lg:hidden text-white text-center hover:border hover:border-bg-blue-600 p-1 cursor-pointer'>Join</div>
+            }} className='block lg:hidden text-white text-center hover:border border-bg-blue-600 p-1 cursor-pointer'>Join</div>
+            <p className='text-gray-400 cursor-pointer hover:underline' onClick={()=> {
+              setuser(false)
+              navigate('/forgetpassword')
+              }}>Forgot Password ?</p>
           </>
           }
           </div>

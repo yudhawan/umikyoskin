@@ -17,16 +17,18 @@ function SocialMedia({auth,token}) {
     useEffect(()=>{
         setTimeout(()=>{
             if(status) dispatch(resetStatus())
+            sosmed.whatsapp=auth?.wa
         },3000)
     },[status])
   return (
     <div className='flex-col'>
         {(status===200)?<div className='flex px-2 py-1 bg-green-500 text-white font-semibold rounded-md'><CheckmarkOutline color={'white'} /><p>Saved</p></div>:<></>}
+        {(status===403)?<div className='flex px-2 py-1 bg-rose-500 text-white font-semibold rounded-md'><CheckmarkOutline color={'white'} /><p>Nomor WhatsApp Pernah Terdaftarkan</p></div>:<></>}
         <div className='flex-col'>
             <div className='text-base font-semibold'>WhatsApp</div>
             <div className='rounded-md border border-gray-300 p-1 w-56 flex justify-center items-center space-x-1'>
                 <FontAwesomeIcon icon={faWhatsapp} className='text-green-500'/>
-                <input type="number" value={sosmed.whatsapp} disabled className="outline-none w-full" />
+                <input type="number" value={sosmed.whatsapp} onChange={(e)=> setsosmed({...sosmed, whatsapp:e.target.value})} className="outline-none w-full" />
             </div>
         </div>
         <div className='flex-col'>
@@ -50,7 +52,10 @@ function SocialMedia({auth,token}) {
                 <input type="text" value={sosmed.facebook} onChange={(e)=> setsosmed({...sosmed, facebook:e.target.value})} className="outline-none w-full" />
             </div>
         </div>
-        <button onClick={()=>dispatch(updateSosmed(sosmed))} className='py-1 px-2 bg-green-600 text-white rounded-md mt-2'>Save</button>
+        <button onClick={()=>{
+            if(auth.wa===sosmed.whatsapp) return dispatch(updateSosmed({email:auth.email,whatsapp:'',instagram:sosmed.instagram,shopee:sosmed.shopee,facebook:sosmed.facebook}))
+            return dispatch(updateSosmed(sosmed))
+        }} className='py-1 px-2 bg-green-600 text-white rounded-md mt-2'>Save</button>
     </div>
   )
 }

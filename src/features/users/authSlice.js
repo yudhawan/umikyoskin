@@ -17,6 +17,7 @@ export const authServices = createAsyncThunk("users/getUsers", async () => {
             localStorage.removeItem('__umk_of_l')
             return {token:null, user:[]}
         }
+        localStorage.setItem('__umk_of_l', token.data?.user?.email)
         return {token:token.data?.token, user:token.data?.user}
     }
 })
@@ -24,7 +25,6 @@ export const userLogin = createAsyncThunk("users/login", async (data) => {
     const result = await axios.post(host+'/users/login', {user:data})
     if(result.data?.token) localStorage.removeItem('__kn_al')
     localStorage.setItem('__umk_of_tkn', result.data?.token)
-    localStorage.setItem('__umk_of_l', result.data.user?.email)
     window.location.href="/"
     return result.data
 })
@@ -59,8 +59,8 @@ const authSlice = createSlice({
         },
         [authServices.fulfilled]: (state, action) => {
             state.authLoading = false
-            state.auth = action.payload.user
-            state.token = action.payload.token
+            state.auth = action.payload?.user
+            state.token = action.payload?.token
         },
         [authServices.rejected]: (state, action) => {
             state.authLoading = false

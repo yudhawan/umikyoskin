@@ -14,6 +14,9 @@ import { auth_status } from "../features/users/authSlice";
 import useAuth from "../hooks/useAuth";
 import PrivateRoute from "../hooks/PrivateRoute";
 import UserProfile from "./UserProfile";
+import NotFound from "./NotFound";
+import ForgetPassword from "./ForgetPassword";
+import ResetPassword from "./ResetPassword";
 function Main() {
     const dispatch = useDispatch()
   const {error} = useSelector(state => state.auth)
@@ -36,11 +39,14 @@ function Main() {
             <Route path="/join" element={<Join/>}/>
             <Route path="/konfirmasi" element={<Confirmation/>}/>
             <Route path="/checkout" element={<Checkout/>} />
+            <Route path="/resetpassword/verification/:token" element={<ResetPassword/>} />
             <Route path="/userprofile" element={
               <PrivateRoute>
                 <UserProfile token={token} auth={auth} />
               </PrivateRoute>
             } />
+            <Route path="/forgetpassword" element={<ForgetPassword/>} />
+            <Route path="/*" element={<NotFound/>} />
         </Routes>
         </div>
         <TabMenu token={token}/>

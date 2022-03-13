@@ -15,7 +15,6 @@ function Home() {
     dispatch(getbanners())
     dispatch(getProducts())
   },[])
-  
   return (
     <div className='flex flex-col justify-center items-center lg:-mt-4 space-y-2 lg:space-y-4'>
       <div className='w-96 justify-center items-center flex flex-col'>
@@ -27,7 +26,7 @@ function Home() {
           <div className='relative z-0 w-full md:w-[80vw] lg:w-[84vw]'>
             <div className='relative z-0 w-full md:w-[80vw] lg:w-[84vw]'>
               {/* image */}
-              <img src={`https://beautyshop.yashacode.com/banner/img/${banners[0]&&banners[0]['name']}`} className={`w-full h-full lg:pt-0 bg-no-repeat bg-contain select-none`}/>
+              <img src={`https://beautyshop.yashacode.com/banner/img/${banners[0]?.name}`} className={`w-full h-full lg:pt-0 bg-no-repeat bg-contain select-none`}/>
               {/* link */}
               {/* <div className='absolute bg-orange-500 px-1 lg:px-2 rounded-sm lg:rounded-lg text-white top-0 left-0 ml-8 mt-[12vh] md:mt-[30vh] lg:ml-16 lg:mt-[44vh] cursor-pointer line-clamp-1 text-sm w-20 lg:w-60 lg:font-semibold'>siapa yang mau bantu tolonglah jangan ganggu aku</div> */}
             </div>
@@ -61,8 +60,8 @@ function Home() {
       </div>
       <div className='flex flex-wrap justify-center items-center'>
         {
-          testimony&&testimony.map(val=>
-            <div className='flex justify-center mx-1 my-1 lg:mx-2 lg:my-2 items-center w-28 h-40 lg:w-48 lg:h-80 border-2 rounded-sm border-primary ' key={val}>
+          testimony&&testimony.map((val,index)=>
+            <div className='flex justify-center mx-1 my-1 lg:mx-2 lg:my-2 items-center w-28 h-40 lg:w-48 lg:h-80 border-2 rounded-sm border-primary ' key={index}>
               <img src={val} className="w-full h-full" />
             </div>
           )
