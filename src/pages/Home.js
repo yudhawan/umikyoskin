@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
-import {getbanners} from '../features/categories/categoriesSlice'
+import {getbanners,getTestimony} from '../features/categories/categoriesSlice'
 import Products from '../components/Products';
 import { getProducts } from '../features/products/productsSlice';
 import {FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 import {faCompass,faCommentDots} from '@fortawesome/free-solid-svg-icons';
 import {useSelector, useDispatch} from 'react-redux'
-import {tsone,tstwo,tsthree,tsfour,tsfive,tssix} from '../testimony'
+
 function Home() {
-  const testimony = [tsone,tstwo,tsthree,tsfour,tsfive,tssix]
   const dispatch = useDispatch()
-  const {banners,bannersLoading} = useSelector(state => state.categories)
+  const {banners,bannersLoading,testimony} = useSelector(state => state.categories)
   const {products,productsLoading} = useSelector(state => state.products)
   useEffect(()=>{
     dispatch(getbanners())
     dispatch(getProducts())
+    dispatch(getTestimony())
   },[])
+  
   return (
     <div className='flex flex-col justify-center items-center lg:-mt-4 space-y-2 lg:space-y-4'>
       <div className='w-96 justify-center items-center flex flex-col'>
@@ -28,7 +29,7 @@ function Home() {
               {/* image */}
               <img src={`https://beautyshop.yashacode.com/banner/img/${banners[0]?.name}`} className={`w-full h-full lg:pt-0 bg-no-repeat bg-contain select-none`}/>
               {/* link */}
-              {/* <div className='absolute bg-orange-500 px-1 lg:px-2 rounded-sm lg:rounded-lg text-white top-0 left-0 ml-8 mt-[12vh] md:mt-[30vh] lg:ml-16 lg:mt-[44vh] cursor-pointer line-clamp-1 text-sm w-20 lg:w-60 lg:font-semibold'>siapa yang mau bantu tolonglah jangan ganggu aku</div> */}
+              <div style={{backgroundColor:banners[0]?.bg, color:banners[0]?.text}} className={`absolute px-1 lg:px-2 rounded-sm lg:rounded-lg  top-0  ${(banners[0]?.position==='left')?'left-0 ml-8':(banners[0]?.position==='right')?'right-0 mr-8':(banners[0]?.position==='center')?'right-0 mr-14':''} mt-[12vh] md:mt-[30vh] lg:ml-16 lg:mt-[44vh] cursor-pointer line-clamp-1 text-sm w-20 lg:w-60 lg:font-semibold `} onClick={()=> window.location.href=banners[0]?.link}>{banners[0]?.alt}</div>
             </div>
           </div>
         }
@@ -58,11 +59,11 @@ function Home() {
         <div className='flex justify-center items-center text-blue-600 p-1 w-8 h-8'><FontAwesomeIcon icon={faCommentDots} className="w-full h-full"/></div>
         <div className='text-blue-600 text-2xl font-semibold'>Testimony</div>
       </div>
-      <div className='flex flex-wrap justify-center items-center'>
+      <div className='flex flex-wrap gap-4 justify-center items-center'>
         {
-          testimony&&testimony.map((val,index)=>
-            <div className='flex justify-center mx-1 my-1 lg:mx-2 lg:my-2 items-center w-28 h-40 lg:w-48 lg:h-80 border-2 rounded-sm border-primary ' key={index}>
-              <img src={val} className="w-full h-full" />
+          testimony?.map((val,index)=>
+            <div className='flex justify-center w-40 h-40 lg:w-60 lg:h-60 border-2 rounded-sm border-primary ' key={index}>
+              <img src={'https://beautyshop.yashacode.com/banner/img/'+val.img} className="w-full h-full" />
             </div>
           )
         }

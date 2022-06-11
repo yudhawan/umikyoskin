@@ -38,7 +38,7 @@ function Card({auth,token}) {
     setpicture('')
     setimage(auth.picutre)
   }
-  let stat = (auth?.status.includes('RNV'))?'REauth?':(auth?.status.includes('ANV'))?'AGEN':(auth?.status.includes('DS'))?'DISTRIBUTOR':'DISTRIBUTOR VIP';
+  let stat = (auth?.status.includes('RNV'))?'RESELLER':(auth?.status.includes('ANV'))?'AGEN':(auth?.status.includes('DS'))?'DISTRIBUTOR':'DISTRIBUTOR VIP';
   const wea = auth?.wa.split('')
   if(wea[0]==='0') wea[0]='62'
   if(wea[0]==='+') wea[0]=''

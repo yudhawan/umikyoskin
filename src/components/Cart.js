@@ -38,11 +38,11 @@ function Cart({cart, showCart}) {
                         <div/>
                     </div>
                     </div>
-                    <div className='select-none flex text-black font-bold text-md lg:text-base w-24'>Rp.
+                    {/* <div className='select-none flex text-black font-bold text-md lg:text-base w-24'>Rp.
                     {
                         token?(val.grosir_min===val.quantity | val.quantity>val.grosir_min)?<div className='text-green-700'>{val.fixprice*val.quantity}</div>:<div>{val.fixprice*val.quantity}</div>:<div>{val.fixprice*val.quantity}</div>
                     }
-                    </div>
+                    </div> */}
                     <div className='text-red cursor-pointer hover:text-rose-600' onClick={()=> dispatch(deleteItem(val.id))}><FontAwesomeIcon icon={faTrash} /></div>
                 </div>                
             )

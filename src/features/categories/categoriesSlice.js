@@ -9,7 +9,11 @@ export const getCategories = createAsyncThunk('categories/getCategories', async 
 export const getbanners = createAsyncThunk('banners/getbanners', async () => {
     const response = await fetch('https://beautyshop.yashacode.com/dashboard/getbanners')
     const data = await response.json()
-    // console.log(data)
+    return data
+})
+export const getTestimony = createAsyncThunk('testimony/getTestimony', async () => {
+    const response = await fetch('https://beautyshop.yashacode.com/dashboard/testimony')
+    const data = await response.json()
     return data
 })
 
@@ -20,6 +24,7 @@ const categoriesSlice = createSlice({
         categoriesLoading: false,
         error: null,
         banners: [],
+        testimony:[],
         bannersLoading: false,
     },
     extraReducers: {
@@ -45,6 +50,17 @@ const categoriesSlice = createSlice({
             state.bannersLoading = false
             state.error = action.payload
         },
+        [getTestimony.pending]: (state) => {
+            state.bannersLoading = true
+        },
+        [getTestimony.fulfilled]: (state, action) => {
+            state.bannersLoading = false
+            state.testimony = action.payload
+        },
+        [getTestimony.rejected]: (state, action) => {
+            state.bannersLoading = false
+            state.error = action.payload
+        }
     }
 })
 

@@ -28,7 +28,7 @@ function DetailProduct() {
                 <div className='text-2xl font-medium line-clamp-1'>{product_name}</div>
                 <div className='flex w-full space-x-52'>
                   <div>
-                    <div className='text-xl font-semibold'>RP. {price}</div>
+                    {/* <div className='text-xl font-semibold'>RP. {price}</div> */}
                     <div className='text-gray-400'>Stock {stock}</div>
                   </div>
                   <div className='flex items-center space-x-2'>

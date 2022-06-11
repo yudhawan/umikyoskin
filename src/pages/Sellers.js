@@ -9,17 +9,16 @@ import {getSellers} from '../features/sellers/sellersSlice';
 function Sellers() {
   const dispatch = useDispatch();
   const {sellers,sellersLoading} = useSelector(state => state.sellers);
-  const [wilayah, setwilayah] = useState('')
+  const [search, setsearch] = useState('')
   const [id, setid] = useState('')
   useEffect(()=>{
     dispatch(getSellers())
   },[])
- 
   return (
     <div>
       {/* panel search */}
       <div className='p-2 flex space-x-3 justify-center items-center'>
-        <div className='flex p-1 items-center space-x-1 w-48 lg:w-60 border-gray-500 text-gray-500 border rounded-md'><FontAwesomeIcon icon={faMap} /><input className='outline-none w-full' type="text" placeholder='Search Location...' value={wilayah} onChange={(e)=>setwilayah(e.target.value)} /></div>
+        <div className='flex p-1 items-center space-x-1 w-48 lg:w-60 border-gray-500 text-gray-500 border rounded-md'><FontAwesomeIcon icon={faMap} /><input className='outline-none w-full' type="text" placeholder='Search Location...' value={search} onChange={(e)=>setsearch(e.target.value)} /></div>
         <div className='flex p-1 items-center space-x-1 w-48 lg:w-60 border-gray-500 text-gray-500 border rounded-md'>
           <FontAwesomeIcon icon={faIdBadge} />
           <select value={id} onChange={(e)=>setid(e.target.value)} className='w-full outline-none'>
@@ -35,7 +34,7 @@ function Sellers() {
       {/* --/-- */}
       <div className={'flex flex-wrap mt-1 justify-center w-full items-center'}>
         {
-          sellers.filter(val => val.kota.toLowerCase().includes(wilayah.toLocaleLowerCase())).filter(value => value.status.toUpperCase().includes(id.toUpperCase())).map((seller,index)=>{
+          sellers?.filter(val => val.verification==1).filter(val => val.kota.toLowerCase().includes(search.toLocaleLowerCase()) || val.nama_lengkap.toLowerCase().includes(search.toLocaleLowerCase()) || val.wa.toLowerCase().includes(search.toLocaleLowerCase()) || val.email.toLowerCase().includes(search.toLocaleLowerCase())).filter(value => value.status.toUpperCase().includes(id.toUpperCase())).map((seller,index)=>{
             let status = (seller.status.includes('RNV'))?'RESELLER':(seller.status.includes('ANV'))?'AGEN':(seller.status.includes('DS'))?'DISTRIBUTOR':'DISTRIBUTOR VIP';
           const wea = seller.wa.split('')
           if(wea[0]==='0') wea[0]='62'

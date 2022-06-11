@@ -16,4 +16,5 @@ export default configureStore({
     orders: ordersReducer,
     auth: authReducer
   },
+  devTools: false
 })
