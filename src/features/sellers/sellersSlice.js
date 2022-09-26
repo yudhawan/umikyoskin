@@ -1,10 +1,12 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-
+import { host } from '../host'
+import axios from 'axios'
 export const getSellers = createAsyncThunk('sellers/getSellers', async () => {
-    const response = await fetch('https://beautyshop.yashacode.com/users/getusers')
+    const response = await fetch(host+'/users/getusers')
     const data = await response.json()
     return data
 })
+
 const sellersSlice = createSlice({
     name: 'sellers',
     initialState: {
@@ -24,6 +26,7 @@ const sellersSlice = createSlice({
             state.sellersLoading = false
             state.error = action.error.message
         },
+        
     }
 })
 

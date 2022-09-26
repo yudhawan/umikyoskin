@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 function Checkout() {
     const dispatch = useDispatch()
     const {basket,basketLoading} = useSelector(state => state.carts)
+    const {token} = useSelector(state=> state.auth)
     const {invoice} = useSelector(state => state.orders)
     const [info,setinfo] = useState({
         nama:'',
@@ -22,7 +23,6 @@ function Checkout() {
         setvalidation('')
         dispatch(makeOrder({nama:info.nama, alamat:info.alamat, wa: info.wa, cart: basket, note:info.note}))
     }
-    const token = 'osd8ej893j8j8j8j8j8j'
     useEffect(() => {
         dispatch(getBasket())
     },[])
@@ -61,11 +61,11 @@ function Checkout() {
                             <div/>
                         </div>
                         </div>
-                        {/* <div className='select-none flex text-black font-bold text-md lg:text-base w-24'>Rp.
+                        <div className='select-none flex text-black font-bold text-md lg:text-base w-24'>Rp.
                         {
                             token?(val.grosir_min===val.quantity | val.quantity>val.grosir_min)?<div className='text-green-700'>{val.grosir_price*val.quantity}</div>:val.price*val.quantity:val.price*val.quantity
                         }
-                        </div> */}
+                        </div>
                         <div className='text-red cursor-pointer hover:text-rose-600' onClick={()=> dispatch(deleteItem(val.id))}><FontAwesomeIcon icon={faTrash} /></div>
                     </div>
                     
@@ -74,12 +74,12 @@ function Checkout() {
             }
             <div className='border border-gray-400 bg-gray-200 rounded-sm justify-between p-3 flex'>
                 <div className='text-xl font-semibold'>Total</div>
-                {/* <div className='select-none text-xl font-semibold'>Rp. {
+                <div className='select-none text-xl font-semibold'>Rp. {
                             basket&&basket.reduce((sum,item)=>{
                                 return sum + (item.quantity * item.fixprice)
                             },0)
                         }
-                </div> */}
+                </div>
             </div>
             <div className='flex flex-col'>
                 <div className='border border-gray-400 bg-blue-200 rounded-sm w-full text-center py-3 px-3'>

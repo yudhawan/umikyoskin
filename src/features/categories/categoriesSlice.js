@@ -1,18 +1,18 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {host} from '../host'
 export const getCategories = createAsyncThunk('categories/getCategories', async () => {
-    const response = await fetch('https://beautyshop.yashacode.com/category')
+    const response = await fetch(host+'/category')
     const data = await response.json()
     return data
 })
 
 export const getbanners = createAsyncThunk('banners/getbanners', async () => {
-    const response = await fetch('https://beautyshop.yashacode.com/dashboard/getbanners')
+    const response = await fetch(host+'/dashboard/getbanners')
     const data = await response.json()
     return data
 })
 export const getTestimony = createAsyncThunk('testimony/getTestimony', async () => {
-    const response = await fetch('https://beautyshop.yashacode.com/dashboard/testimony')
+    const response = await fetch(host+'/dashboard/testimony')
     const data = await response.json()
     return data
 })

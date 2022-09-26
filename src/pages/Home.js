@@ -5,7 +5,7 @@ import { getProducts } from '../features/products/productsSlice';
 import {FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 import {faCompass,faCommentDots} from '@fortawesome/free-solid-svg-icons';
 import {useSelector, useDispatch} from 'react-redux'
-
+import {host} from '../features/host'
 function Home() {
   const dispatch = useDispatch()
   const {banners,bannersLoading,testimony} = useSelector(state => state.categories)
@@ -27,7 +27,7 @@ function Home() {
           <div className='relative z-0 w-full md:w-[80vw] lg:w-[84vw]'>
             <div className='relative z-0 w-full md:w-[80vw] lg:w-[84vw]'>
               {/* image */}
-              <img src={`https://beautyshop.yashacode.com/banner/img/${banners[0]?.name}`} className={`w-full h-full lg:pt-0 bg-no-repeat bg-contain select-none`}/>
+              <img src={host+`/banner/img/${banners[0]?.name}`} className={`w-full h-full lg:pt-0 bg-no-repeat bg-contain select-none`}/>
               {/* link */}
               <div style={{backgroundColor:banners[0]?.bg, color:banners[0]?.text}} className={`absolute px-1 lg:px-2 rounded-sm lg:rounded-lg  top-0  ${(banners[0]?.position==='left')?'left-0 ml-8':(banners[0]?.position==='right')?'right-0 mr-8':(banners[0]?.position==='center')?'right-0 mr-14':''} mt-[12vh] md:mt-[30vh] lg:ml-16 lg:mt-[44vh] cursor-pointer line-clamp-1 text-sm w-20 lg:w-60 lg:font-semibold `} onClick={()=> window.location.href=banners[0]?.link}>{banners[0]?.alt}</div>
             </div>
@@ -63,7 +63,7 @@ function Home() {
         {
           testimony?.map((val,index)=>
             <div className='flex justify-center w-40 h-40 lg:w-60 lg:h-60 border-2 rounded-sm border-primary ' key={index}>
-              <img src={'https://beautyshop.yashacode.com/banner/img/'+val.img} className="w-full h-full" />
+              <img src={host+'/banner/img/'+val.img} className="w-full h-full" />
             </div>
           )
         }

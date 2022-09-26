@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useRef,useState } from 'react'
 import {FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 import {faInstagram,faShopify, faWhatsapp} from "@fortawesome/free-brands-svg-icons";
 import { CameraOutline,CloudDownloadOutline,CheckmarkOutline } from 'react-ionicons'
-import UmikyoLoading from './umikyo.png'
 import { useDispatch,useSelector } from 'react-redux';
 import {updatePicture,resetStatus} from '../../features/users/usersSlice'
+import UmikyoLoading from './umikyo.png'
 import Logo from '../logo.png'
 import { toPng } from 'html-to-image';
 function Card({auth,token}) {
@@ -57,7 +57,7 @@ function Card({auth,token}) {
           <div onClick={()=> img.current.click()} className='cursor-pointer rounded-full w-10 h-10 absolute bottom-0 right-10 bg-slate-500 justify-center items-center flex'><CameraOutline color={'black'} /></div>
           {
             picture?<img src={picture} className="w-full h-full rounded-full" />:
-            <img src={auth.picture?`https://beautyshop.yashacode.com/users/img/${auth.picture}`:'https://via.placeholder.com/150.png?text=umikyo'} className="w-full h-full rounded-full" />
+            <img src={auth.picture?`https://svr.umikyoskin.com/users/img/${auth.picture}`:'https://via.placeholder.com/150.png?text=umikyo'} className="w-full h-full rounded-full" />
           }
       </div>
       <input type='file' hidden name="image" accept="image/*" ref={img} onChange={(e)=>{
@@ -116,7 +116,7 @@ function Card({auth,token}) {
           <div className='flex p-1 space-x-8 py-6 w-full'>
             <div className='flex justify-center items-center flex-col w-full'>
                 <div className='border-logobg border-2 w-24 h-28 mt-1 rounded-sm '>
-                    <img src={auth.picture?'https://beautyshop.yashacode.com/users/img/'+auth.picture:UmikyoLoading} className='w-full h-full' />
+                    <img src={auth.picture?'https://svr.umikyoskin.com/users/img/'+auth.picture:UmikyoLoading} className='w-full h-full' />
                 </div>
                 <div className='text-black text-md font-semibold line-clamp-1'>{auth.nama_lengkap}</div>
                 <div className='text-black text-sm font-semibold'>{(auth.status.includes('DS') | auth.status.includes('DVIP'))?auth.status+'-'+auth.kode_ref:auth.kode_ref+'-'+auth.status}</div>

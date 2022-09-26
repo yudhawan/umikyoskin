@@ -1,5 +1,5 @@
 import {createAsyncThunk,createSlice} from '@reduxjs/toolkit'
-
+import {host} from './host'
 export const addProductToCart = createAsyncThunk('cart/addProductToCart', async (product) => {
     let cart = []
     try {
@@ -88,7 +88,7 @@ export const getBasket = createAsyncThunk('cart/getCart', async (arg,{getState})
     let cart = []
     let products
     try {
-        const response = await fetch('https://beautyshop.yashacode.com/products')
+        const response = await fetch(host+'/products')
         products = await response.json()
     } catch (error) {
         cart = []

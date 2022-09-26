@@ -8,6 +8,7 @@ function SocialMedia({auth,token}) {
     const dispatch = useDispatch()
     const {status} = useSelector(state => state.users)
     const [sosmed, setsosmed] = useState({
+        id:auth?.id,
         whatsapp:auth?.wa,
         instagram:auth?.ig,
         shopee:auth?.shoope,
@@ -53,7 +54,7 @@ function SocialMedia({auth,token}) {
             </div>
         </div>
         <button onClick={()=>{
-            if(auth.wa===sosmed.whatsapp) return dispatch(updateSosmed({email:auth.email,whatsapp:'',instagram:sosmed.instagram,shopee:sosmed.shopee,facebook:sosmed.facebook}))
+            if(auth.wa===sosmed.whatsapp) return dispatch(updateSosmed({id:auth.id,email:auth.email,whatsapp:'',instagram:sosmed.instagram,shopee:sosmed.shopee,facebook:sosmed.facebook}))
             return dispatch(updateSosmed(sosmed))
         }} className='py-1 px-2 bg-green-600 text-white rounded-md mt-2'>Save</button>
     </div>

@@ -70,8 +70,7 @@ function Confirmation() {
             </div>
             <button className='bg-orange-500 px-2 py-1 rounded-md text-white text-lg mt-1' onClick={cekUpload}>Upload</button>
           </div>
-          {
-            img&&
+          
             <>
             <div className='w-48 h-60 rounded-sm'>
               <img src={img} className='w-full h-full' />
@@ -88,7 +87,7 @@ function Confirmation() {
               </div>
             </div>
             </>
-          }
+          
         </div>
       }
       {
@@ -105,7 +104,7 @@ function Confirmation() {
         order&&(order.status==='queue')&&
         <div className='flex flex-col w-full justify-center items-center space-y-2 p-4 h-auto border-orange-500 border-2 rounded-md divide-y divide-solid'>
           <div>
-            <div className='text-lg font-semibold'>Pesanan anda dalam antrian, cek secara berkala di laman ini, admin sedang biaya kesuluruhan pesanan anda, proses ini membutuhkan waktu tidak lebih dari 30 menit</div>
+            <div className='text-lg font-semibold'>Pesanan anda dalam antrian, cek secara berkala di laman ini, admin sedang memproses biaya kesuluruhan pesanan anda, proses ini membutuhkan waktu tidak lebih dari 30 menit</div>
             <div className='text-base font-base'>*Admin akan mencarikan kurir dengan biaya pengiriman yang terjangkau</div>
           </div>
         </div>

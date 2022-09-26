@@ -4,10 +4,11 @@ import Profil from '../components/User/Profil'
 import SocialMedia from '../components/User/SocialMedia'
 import Pengaturan from '../components/User/Pengaturan'
 import Refferal from '../components/User/Refferal'
+import UbahRefferal from '../components/User/UbahRefferal'
 import useAuth from '../hooks/useAuth'
 function UserProfile() {
     const {auth,token} = useAuth()
-    const menus =(auth?.status.includes("DS") || auth?.status.includes("DVIP"))?['Profil','Sosmed','Pengaturan','My Refferal','My ID Card']:['Profil','Sosmed','Pengaturan','My ID Card']
+    const menus =(auth?.status.includes("DS") || auth?.status.includes("DVIP"))?['Profil','Sosmed','Pengaturan','My Refferal','My ID Card']:['Profil','Sosmed','Pengaturan','Refferal','My ID Card']
     const [tab,settab] = useState('Profil')
     
   return (
@@ -21,7 +22,7 @@ function UserProfile() {
         </div>
         <div className='w-full h-auto lg:h-auto rounded-md border border-orange-700 py-2 px-4 relative'>
             {
-                tab==='Profil'?<Profil auth={auth} token={token} />:tab==='Sosmed'?<SocialMedia auth={auth} token={token} />:tab==='Pengaturan'?<Pengaturan auth={auth} token={token} />:tab==='My Refferal'?<Refferal auth={auth} token={token} />:tab==='My ID Card'?<Card auth={auth} token={token}/>:''
+                tab==='Profil'?<Profil auth={auth} token={token} />:tab==='Sosmed'?<SocialMedia auth={auth} token={token} />:tab==='Pengaturan'?<Pengaturan auth={auth} token={token} />:tab==='My Refferal'?<Refferal auth={auth} token={token} />:tab==='My ID Card'?<Card auth={auth} token={token}/>:tab==='Refferal'?<UbahRefferal auth={auth} token={token}/>:''
             }
         </div>
     </div>

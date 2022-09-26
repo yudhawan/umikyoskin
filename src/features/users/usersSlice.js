@@ -1,6 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { host } from "../host";
 import {authServices} from './authSlice'
+import {getSellers} from '../sellers/sellersSlice'
 import axios from "axios";
 
 export const addUser = createAsyncThunk("users/addUser", async (data) => {
@@ -26,7 +27,12 @@ export const updateSetting = createAsyncThunk("users/updateSetting", async (data
     dispatch(authServices())
     return result.data
 })
-
+export const updateRefferal = createAsyncThunk("users/updateRefferal", async (data,{getState,dispatch}) => {
+    const token = getState().auth.token
+    const result = await axios.post(host+'/users/update/refferal', {user:data},{headers:{'authorization': `Bearer ${token}`}})
+    dispatch(authServices())
+    return result.data
+})
 export const updatePicture = createAsyncThunk("users/updatePicture", async (data,{getState,dispatch}) => {
     const token = getState().auth.token
     let formdata = new FormData()
@@ -54,6 +60,32 @@ export const forgetPassword = createAsyncThunk("users/forgetPassword", async (em
 export const setNewPassword = createAsyncThunk("users/setNewPassword", async (data) => {
     const result = await axios.post(host+'/users/setnewpassword', {token:data.token,password:data.password})
     return result.data
+})
+export const acceptRef = createAsyncThunk("users/acceptRef", async (data,{dispatch,getState}) => {
+    const token = getState().auth.token
+    await axios({
+        method:'post',
+        url:host+'/users/acceptRef',
+        data:{id:data},
+        headers:{
+            'authorization': `Bearer ${token}`
+        }
+    })
+    dispatch(getSellers())
+    return 
+})
+export const deleteRef = createAsyncThunk("users/deleteRef", async (data,{dispatch,getState}) => {
+    const token = getState().auth.token
+    await axios({
+        method:'delete',
+        url:host+'/users/deleteRef',
+        params:{id:data},
+        headers:{
+            'authorization': `Bearer ${token}`
+        }
+    })
+    dispatch(getSellers())
+    return 
 })
 const usersSlice = createSlice({
     name: "users",
@@ -108,9 +140,19 @@ const usersSlice = createSlice({
         [updateSetting.fulfilled]: (state, action) => {
             state.usersLoading = false
             state.status = action.payload.status
-            console.log(action.payload.status)
         },
         [updateSetting.rejected]: (state, action) => {
+            state.usersLoading = false
+            state.error = action.payload.status
+        },
+        [updateRefferal.pending]: (state)=>{
+            state.usersLoading = true
+        },
+        [updateRefferal.fulfilled]: (state, action) => {
+            state.usersLoading = false
+            state.status = action.payload.status
+        },
+        [updateRefferal.rejected]: (state, action) => {
             state.usersLoading = false
             state.error = action.payload.status
         },
