@@ -5,6 +5,7 @@ import {useDispatch,useSelector} from 'react-redux'
 import { useEffect } from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCartPlus} from '@fortawesome/free-solid-svg-icons'
+import {host} from '../features/host'
 function DetailProduct() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -21,7 +22,7 @@ function DetailProduct() {
         return(
           <div className='flex flex-col space-y-2 justify-center items-center'>
             <div className='w-96 h-60 lg:w-[60vw] lg:h-[60vh] lg:pt-0 border-b border-gray-300 p-2'>
-              <img src={'https://beautyshop.yashacode.com/products/img/'+img} alt={product_name} className='w-full h-full' />
+              <img src={host+'/products/img/'+img} alt={product_name} className='w-full h-full' />
             </div>
             <div className='flex w-full'>
               <div className='flex flex-col'>
