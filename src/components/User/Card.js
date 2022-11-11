@@ -8,6 +8,7 @@ import UmikyoLoading from './umikyo.png'
 import Logo from '../logo.png'
 import { toPng } from 'html-to-image';
 function Card({auth,token}) {
+  console.log(auth)
   const dispatch = useDispatch()
   const {status,usersLoading} = useSelector(state => state.users)
   const componentRef = useRef();
