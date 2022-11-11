@@ -19,7 +19,7 @@ function Products({id,product_name,stock,price,category,sub,images,description,g
             <div className='text-sm text-gray-400 line-clamp-1'>{category} / {sub}</div>
         </div>
         <div className='flex w-full'>
-          <div className='justify-start p-1 font-medium text-sm lg:text-lg text-left w-full'>Rp.{price}</div>
+          {/* <div className='justify-start p-1 font-medium text-sm lg:text-lg text-left w-full'>Rp.{price}</div> */}
           <div className='p-1 justify-end flex space-x-1'>
             <div className='bg-green-700 p-1 border rounded-md text-white font-semibold text-sm lg:text-md cursor-pointer' onClick={()=>{
               dispatch(addProductToCart({id:id,stock:stock}))

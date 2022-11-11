@@ -38,11 +38,11 @@ function Cart({cart, showCart}) {
                         <div/>
                     </div>
                     </div>
-                    <div className='select-none flex text-black font-bold text-md lg:text-base w-24'>Rp.
+                    {/* <div className='select-none flex text-black font-bold text-md lg:text-base w-24'>Rp.
                     {
                         token?(val.grosir_min===val.quantity | val.quantity>val.grosir_min)?<div className='text-green-700'>{val.fixprice*val.quantity}</div>:<div>{val.fixprice*val.quantity}</div>:<div>{val.fixprice*val.quantity}</div>
                     }
-                    </div>
+                    </div> */}
                     <div className='text-red cursor-pointer hover:text-rose-600' onClick={()=> dispatch(deleteItem(val.id))}><FontAwesomeIcon icon={faTrash} /></div>
                 </div>                
             )
@@ -53,11 +53,11 @@ function Cart({cart, showCart}) {
         }
         <div className='flex space-x-2 lg:space-x-4 justify-end right-10 w-full p-1 lg:p-2'>
             <div className='text-white font-semibold text-md lg:text-lg'>Total</div>
-            <div className='select-none text-white font-bold text-md lg:text-lg'>Rp. {
+            {/* <div className='select-none text-white font-bold text-md lg:text-lg'>Rp. {
                         basket&&basket.reduce((sum,item)=>{
                             return sum + (item.quantity * item.fixprice)
                         },0)
-                    }</div>
+                    }</div> */}
         </div>
 
           
