@@ -29,7 +29,7 @@ function DetailProduct() {
                 <div className='text-2xl font-medium line-clamp-1'>{product_name}</div>
                 <div className='flex w-full space-x-52'>
                   <div>
-                    {/* <div className='text-xl font-semibold'>RP. {price}</div> */}
+                    <div className='text-xl font-semibold'>RP. {price}</div>
                     <div className='text-gray-400'>Stock {stock}</div>
                   </div>
                   <div className='flex items-center space-x-2'>
@@ -40,7 +40,7 @@ function DetailProduct() {
                     <div className='bg-amber-500 border rounded-md font-semibold text-md lg:text-lg px-1 cursor-pointer items-center' onClick={()=>dispatch(addProductToCart({id:id, stock:stock}))} >{cartLoading?<div className='animate-spin'>u</div>:<FontAwesomeIcon icon={faCartPlus} size={'lg'} />}</div>
                   </div>
                 </div>
-                {/* {true&&<div className='text-sm text-green-700 font-semibold'>RP. {price} (Grosir)</div>} */}
+                {true&&<div className='text-sm text-green-700 font-semibold'>RP. {price} (Grosir)</div>}
                 <div className='w-full'>
                   <div className='text-xl font-semibold'>Description :</div>
                   <div className='text-sm'>{description}</div>
